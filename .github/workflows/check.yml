@@ -126,12 +126,17 @@ jobs:
   test:
     runs-on: ubuntu-latest
     name: ubuntu / stable / test
+    strategy:
+      matrix:
+        target: [thumbv8m.main-none-eabihf]
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: true
       - name: Install stable
         uses: dtolnay/rust-toolchain@stable
+      - name: rustup target add ${{ matrix.target }}
+        run: rustup target add ${{ matrix.target }}
       - name: cargo install cargo-hack
         uses: taiki-e/install-action@cargo-hack
       - name: cargo test
